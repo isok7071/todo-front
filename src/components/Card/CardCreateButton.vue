@@ -10,11 +10,12 @@
 </template>
 
 <script setup lang="ts">
-import { useAppStore } from '@/store/app';
+import { useCardStore } from '@/store/card';
 
-const store = useAppStore()
+const store = useCardStore()
 
 defineProps<{
     cardButtonText: String,
 }>()
 </script>
+@/store/card

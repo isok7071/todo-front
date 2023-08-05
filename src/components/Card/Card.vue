@@ -76,11 +76,11 @@
 </template>
 
 <script setup lang="ts">
-import { useAppStore } from '@/store/app';
+import { useCardStore } from '@/store/card';
 import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
 
-const store = useAppStore()
+const store = useCardStore()
 const { card } = storeToRefs(store)
 const dialog = ref(false)
 
@@ -91,4 +91,4 @@ const dialog = ref(false)
     font-size: 2rem;
     font-weight: bold;
 }
-</style>
+</style>@/store/card
