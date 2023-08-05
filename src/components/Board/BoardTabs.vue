@@ -1,9 +1,13 @@
 <template>
     <v-card>
-        <v-tabs v-model="boardsList">
+        <v-tabs
+            v-model="activeBoard.boardId"
+            show-arrows
+            center-active
+        >
 
             <v-tab
-                v-for="board in  boardsList "
+                v-for="board in  boardsList"
                 :key="board"
                 :value="board"
             >
@@ -37,5 +41,6 @@ import { storeToRefs } from 'pinia';
 import { useBoardStore } from '@/store/board';
 
 const store = useBoardStore()
-const { boardsList } = storeToRefs(store)
+const { boardsList, activeBoard } = storeToRefs(store)
+
 </script>
