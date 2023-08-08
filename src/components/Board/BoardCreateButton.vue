@@ -5,7 +5,7 @@
         variant="outlined"
         color="primary"
         prepend-icon="mdi-plus"
-        @click="store.openBoardCreationForm"
+        @click="store.boardForm.isOpened = true"
     >{{ buttonText }}</v-btn>
 </template>
 
@@ -18,4 +18,3 @@ defineProps<{
     buttonText: String,
 }>()
 </script>
-@/store/card

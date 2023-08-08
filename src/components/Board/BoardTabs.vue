@@ -1,23 +1,31 @@
 <template>
     <v-card>
+        <BoardCreateButton button-text="Создать доску" />
+
         <v-tabs
-            v-model="activeBoard.boardId"
+            v-model="activeBoard.id"
             show-arrows
             center-active
         >
-
             <v-tab
-                v-for="board in  boardsList"
-                :key="board.boardId"
+                v-for="board in boardsList"
+                :key="board?.id"
                 :value="board"
             >
-                {{ board.name }}
+                <v-btn
+                    icon="$delete"
+                    variant="text"
+                    size="x-small"
+                    @click="store.deleteBoard(board?.id)"
+                >
+                </v-btn>
+                {{ board?.name }}
             </v-tab>
         </v-tabs>
-        <v-window v-model="activeBoard.boardId">
+        <v-window v-model="activeBoard.id">
             <v-window-item
                 v-for="board in  boardsList"
-                :key="board.boardId"
+                :key="board?.id"
                 :value="board"
             >
                 <v-container fluid>
@@ -57,10 +65,11 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { useBoardStore } from '@/store/board';
+import BoardCreateButton from '@/components/Board/BoardCreateButton.vue';
 
 const store = useBoardStore()
 const { boardsList, activeBoard } = storeToRefs(store)
-// store.createBoard()
-store.getBoardsList()
 
+store.getBoardsList()
+console.log(boardsList.value)
 </script>

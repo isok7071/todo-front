@@ -4,7 +4,7 @@
         width="1024"
         persistent
     >
-        <v-card>
+        <v-card    class="rounded-xl">
             <v-card-title>
                 <v-container>
                     <v-col>
@@ -91,4 +91,4 @@ const dialog = ref(false)
     font-size: 2rem;
     font-weight: bold;
 }
-</style>@/store/card
+</style>

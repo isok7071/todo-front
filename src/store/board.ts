@@ -1,55 +1,84 @@
 // Utilities
 import { defineStore } from 'pinia'
 import axios from 'axios';
-
+import { useAppStore } from './app';
+//TODO переписать на composition api
 export const useBoardStore = defineStore('board', {
   state: () => {
     return {
       activeBoard: <activeBoard>{
-        boardId: 0,
+        id: 0,
         content: '',
         name: '',
         stages_id: 0,
       },
-      boardsList: <boardType[]>[
-        { boardId: 0, name: 'Доска' },
-        { boardId: 1, name: 'Доска 1' },
-        { boardId: 2, name: 'Доска 2' },
-        { boardId: 3, name: 'Доска' },
-        { boardId: 4, name: 'Доска 1' },
-        { boardId: 5, name: 'Доска 2' },
-        { boardId: 6, name: 'Доска' },
-        { boardId: 7, name: 'Доска 1' },
-        { boardId: 8, name: 'Доска 2' },
-        { boardId: 9, name: 'Доска' },
-        { boardId: 10, name: 'Доска 1' },
-        { boardId: 11, name: 'Доска 2' },
-        { boardId: 12, name: 'Доска' },
-        { boardId: 13, name: 'Доска 1' },
-        { boardId: 14, name: 'Доска 2' },
-      ],
-      boardCreationForm: {
+      boardsList: <boardType[]>{},
+      isBoardListLoading: false,
+      boardForm: <boardForm>{
+        isOpened: false,
+        data: {
+          name: '',
+        }
+      },
+      appStore: useAppStore(),
 
-      }
     }
   },
   actions: {
+
+    //TODO убрать url в env
+    //Сделать проверку на то что может быть пустой массив досок
     openBoardCreationForm() {
       // this.card.isOpened = false;
       this.boardsList
     },
-    async createBoard() {
-      const result = await axios.post('http://localhost/api/' + 'boards/create', null, {
+    async getBoardsList() {
+      this.appStore.toggleOverlay()
+      const result = await axios.get('http://localhost/api/' + 'boards');
+      this.boardsList = result.data;
+      this.appStore.toggleOverlay()
+
+    },
+    async deleteBoard(id: number | undefined) {
+      if (id === undefined) {
+        return;
+      }
+      this.appStore.toggleOverlay()
+      await axios.post('http://localhost/api/' + 'boards/delete', null, {
         params: {
-          name: "Новая",
+          id: id,
+        },
+      });
+      this.getBoardsList();
+      this.appStore.toggleOverlay()
+
+    },
+    async sendBoardForm() {
+      //TODO обработка ошибки, валидация
+      if (!this.boardForm.data.name?.length) {
+        return;
+      }
+      this.appStore.toggleOverlay()
+      await axios.post('http://localhost/api/' + 'boards/create', null, {
+        params: {
+          name: this.boardForm.data.name,
         }
       });
-      console.log(result.data);
+      this.boardForm.isOpened=false;
+      this.resetForm();
+      this.getBoardsList();
+      this.appStore.toggleOverlay()
     },
-    async getBoardsList() {
-      const result = await axios.get('http://localhost/api/' + 'boards');
-      console.log(result.data);
+    resetForm() {
+      this.boardForm.data.name = null;
     },
+    // toggleAttribute(attrToToggle: boolean) {
+    //   if (attrToToggle) {
+    //     attrToToggle = false;
+    //   } else {
+    //     attrToToggle = true;
+    //   }
+    // },
   },
 
 })

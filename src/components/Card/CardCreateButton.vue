@@ -18,4 +18,3 @@ defineProps<{
     cardButtonText: String,
 }>()
 </script>
-@/store/card
